@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -20,11 +21,13 @@ namespace TestWebsite.Core
             _lifetime.ApplicationStopping.Register(() => _logger.LogInformation($"lifetime.ApplicationStopping"));
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
+            await File.WriteAllTextAsync("a.txt", _logger.GetType().FullName);
+
             _logger.LogInformation($"{nameof(StartAsync)}.{cancellationToken.IsCancellationRequested}.");
 
-            return Task.Factory.StartNew(async () =>
+            await Task.Factory.StartNew(async () =>
             {
                 while (true)
                 {

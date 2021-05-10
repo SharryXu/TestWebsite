@@ -9,21 +9,19 @@ namespace TestWebsite
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-
-            host.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseNLog()
-                .ConfigureWebHostDefaults(webBuilder =>
+               .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseNLog();
                 })
-                .ConfigureLogging(logging => {
+               .ConfigureLogging(logging => {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                });
-    }
+                    logging.SetMinimumLevel(LogLevel.Information);
+                })
+                .UseNLog();
+   }
 }
