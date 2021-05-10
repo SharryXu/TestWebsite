@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +23,16 @@ namespace TestWebsite.Core
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{nameof(StartAsync)}.{cancellationToken.IsCancellationRequested}.");
-            return Task.CompletedTask;
+
+            return Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    _logger.LogInformation(DateTime.Now.ToLongDateString());
+
+                    await Task.Delay(1000);
+                }
+            }, TaskCreationOptions.LongRunning);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
