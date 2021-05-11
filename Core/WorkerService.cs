@@ -31,9 +31,9 @@ namespace TestWebsite.Core
             {
                 while (true)
                 {
-                    _logger.LogInformation(DateTime.Now.ToLongDateString());
+                    _logger.LogInformation($"Current time is: {DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss")}.");
 
-                    await Task.Delay(1000);
+                    await Task.Delay(TimeSpan.FromMinutes(1));
                 }
             }, TaskCreationOptions.LongRunning);
 
