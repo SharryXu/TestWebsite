@@ -16,7 +16,7 @@ namespace TestWebsite
             Host.CreateDefaultBuilder(args)
                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>().UseNLog();
+                    webBuilder.UseStartup<Startup>().UseNLog().UseUrls("http://*:81");
                 })
                .ConfigureLogging(logging => {
                     logging.ClearProviders();
