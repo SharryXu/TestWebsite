@@ -14,10 +14,10 @@ namespace TestWebsite.Controllers
         [HttpGet]
         public IActionResult Ping()
         {
-            if (DateTime.Now.Minute % 2 == 0){
-                return Ok("Sounds great!");
+            if (DateTime.Now.Minute % 5 != 0){
+                return Ok($"{System.Environment.MachineName}: Sounds great!");
             } else {
-                return BadRequest("Sounds bad!");
+                return BadRequest($"{System.Environment.MachineName}: Sounds bad!");
             }
         }
     }
