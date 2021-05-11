@@ -4,18 +4,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace TestWebsite.Core
 {
     public class WorkerService : IHostedService
     {
         private IHostApplicationLifetime _lifetime;
-        private ILogger<BackgroundService> _logger;
+        private Logger _logger;
 
         public WorkerService(IHostApplicationLifetime lifetime, ILogger<BackgroundService> logger)
         {
             _lifetime = lifetime;
-            _logger = logger;
+            _logger = new NLog.LogFactory().GetCurrentClassLogger();
+
             _lifetime.ApplicationStarted.Register(() => _logger.LogInformation($"lifetime.ApplicationStarted"));
             _lifetime.ApplicationStopped.Register(() => _logger.LogInformation($"lifetime.ApplicationStopped"));
             _lifetime.ApplicationStopping.Register(() => _logger.LogInformation($"lifetime.ApplicationStopping"));
@@ -23,8 +25,6 @@ namespace TestWebsite.Core
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await File.WriteAllTextAsync("a.txt", _logger.GetType().FullName);
-
             _logger.LogInformation($"{nameof(StartAsync)}.{cancellationToken.IsCancellationRequested}.");
 
             await Task.Factory.StartNew(async () =>
@@ -36,12 +36,22 @@ namespace TestWebsite.Core
                     await Task.Delay(1000);
                 }
             }, TaskCreationOptions.LongRunning);
+
+            _logger.LogInformation($"{nameof(StartAsync)}.FinishStart");
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{nameof(StopAsync)}.{cancellationToken.IsCancellationRequested}.");
             return Task.CompletedTask;
+        }
+    }
+
+    public static class LogExtensions
+    {
+        public static void LogInformation(this Logger logger, string message)
+        {
+            logger.Log(NLog.LogLevel.Info, message);
         }
     }
 }
