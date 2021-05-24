@@ -6,10 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TestWebsite.Core;
@@ -35,6 +37,17 @@ namespace TestWebsite
             //services.AddLogging(s => s.AddNLogWeb());
             //services.AddLogging(s => s.AddNLog());
             services.AddLogging();
+
+            services.AddSwaggerGen(c =>
+            {
+                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory!;
+                var modelsCommentsFile = Path.Combine(baseDirectory!, "RefundAchTransactionValidator.xml");
+
+                if (File.Exists(modelsCommentsFile))
+                    c.IncludeXmlComments(modelsCommentsFile);
+
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RefundAchTransactionValidator", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +58,13 @@ namespace TestWebsite
                 app.UseDeveloperExceptionPage();
             }
 
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Acknowledgement V1"); });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -53,7 +73,8 @@ namespace TestWebsite
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default",
+                "{controller=Healthy}/{action=ping}");
             });
         }
     }

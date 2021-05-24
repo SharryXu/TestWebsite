@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace TestWebsite.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
     public class HealthyController : ControllerBase
     {
