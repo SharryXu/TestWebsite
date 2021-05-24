@@ -58,14 +58,14 @@ namespace TestWebsite
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UsePathBase("/testwebsite");
+            //app.UsePathBase("/testwebsite");
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "Acknowledgement V1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("v1/swagger.json", "TestWebsite V1"); });
 
             app.UseHttpsRedirection();
 
