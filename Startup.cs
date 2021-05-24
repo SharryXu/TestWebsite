@@ -58,6 +58,8 @@ namespace TestWebsite
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UsePathBase("/testwebsite");
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
