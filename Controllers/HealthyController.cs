@@ -11,6 +11,7 @@ namespace TestWebsite.Controllers
     public class HealthyController : ControllerBase
     {
         [HttpGet]
+        [Route("Ping")]
         public IActionResult Ping()
         {
             return Ok($"{System.Environment.NewLine}{System.Environment.MachineName}: Sounds great!{System.Environment.NewLine}{System.Environment.NewLine}");
