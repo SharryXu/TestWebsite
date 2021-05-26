@@ -33,10 +33,10 @@ namespace TestWebsite.Core
                 {
                     _logger.LogInformation($"Current time is: {DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss")}.");
 
-                    if (File.Exists("hello.txt")){
-                        File.Delete("hello.txt");
+                    if (File.Exists("test/hello.txt")){
+                        File.Delete("test/hello.txt");
                     }
-                    await File.WriteAllTextAsync("hello.txt", $"Hello! Current time is: {DateTime.Now.ToShortTimeString()}.");
+                    await File.WriteAllTextAsync("test/hello.txt", $"Hello! Current time is: {DateTime.Now.ToShortTimeString()}.");
 
                     await Task.Delay(TimeSpan.FromMinutes(1));
                 }
